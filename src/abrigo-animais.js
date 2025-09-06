@@ -15,7 +15,7 @@ class AbrigoAnimais {
 
     const ordemAnimaisArr = ordemAnimais.split(",");
 
-    function satisfazAnimal(brinquedosAnimal, brinquedosPessoa) {
+    function satisfazAnimal(brinquedosAnimal, tipoAnimal, brinquedosPessoa) {
       let posPessoa = 0;
       // Compara se a pessoa dá o brinquedo na ordem que o animal deseja
       for (const brinquedo of brinquedosAnimal) {
@@ -31,8 +31,8 @@ class AbrigoAnimais {
         if (!encontrado) {
           return false;
         }
-        return true;
       }
+      return true;
     }
 
     let resultado = [];
@@ -46,14 +46,44 @@ class AbrigoAnimais {
         return { erro: "Animal inválido" };
       }
 
+      // Verificar se um dos animais selcionados é um gato
+      const gatos = animaisSelecionados.filter(
+        (animal) => animal.tipo === "gato"
+      );
+
+      if (gatos.length > 0) {
+        // Se for, verificar se há pelo menos um brinquedo do gato seja igual a dos outros animais
+
+        for (gato of gatos) {
+          const posGato = animaisSelecionados.findIndex(
+            (animal) => animal.tipo === "gato"
+          );
+
+          for (let i = 0; i < animaisSelecionados; i++) {
+            if (i === posGato) continue;
+            if (
+              animaisSelecionados[posGato].brinquedos ===
+              animaisSelecionados[i].brinquedos
+            ) {
+              // Se for, o gato automaticamente fica no abrigo
+              resultado.push(`${animaisSelecionados[posGato].nome} - abrigo`);
+              // Retira o gato da lista
+              animaisSelecionados.splice(posGato, 1);
+            }
+          }
+        }
+      }
+
       // 3. Checa se as pessoas satisfazem o desejo dos animais:
       animaisSelecionados.forEach((animal) => {
         const pessoa1Satisfaz = satisfazAnimal(
           animal.brinquedos,
+          animal.tipo,
           brinquedosPessoa1Arr
         );
         const pessoa2Satisfaz = satisfazAnimal(
           animal.brinquedos,
+          animal.tipo,
           brinquedosPessoa2Arr
         );
 
