@@ -46,30 +46,27 @@ class AbrigoAnimais {
         return { erro: "Animal inválido" };
       }
 
-      // Verificar se um dos animais selcionados é um gato
+      // Separar gatos dos animais selecionados:
       const gatos = animaisSelecionados.filter(
         (animal) => animal.tipo === "gato"
       );
 
+      // Verificar se há gatos
       if (gatos.length > 0) {
-        // Se for, verificar se há pelo menos um brinquedo do gato seja igual a dos outros animais
-
-        for (gato of gatos) {
-          const posGato = animaisSelecionados.findIndex(
-            (animal) => animal.tipo === "gato"
+        for (const gato of gatos) {
+          // Verificar se há pelo menos um brinquedo do gato seja igual a dos outros animais
+          const conflito = animaisSelecionados.some(
+            (outro) =>
+              outro.nome !== gato.nome &&
+              outro.brinquedos.some((b) => gato.brinquedos.includes(b))
           );
-
-          for (let i = 0; i < animaisSelecionados; i++) {
-            if (i === posGato) continue;
-            if (
-              animaisSelecionados[posGato].brinquedos ===
-              animaisSelecionados[i].brinquedos
-            ) {
-              // Se for, o gato automaticamente fica no abrigo
-              resultado.push(`${animaisSelecionados[posGato].nome} - abrigo`);
-              // Retira o gato da lista
-              animaisSelecionados.splice(posGato, 1);
-            }
+          if (conflito) {
+            resultado.push(`${gato.nome} - abrigo`);
+            // remove o gato da lista para não ser processado depois
+            animaisSelecionados.splice(
+              animaisSelecionados.findIndex((a) => a.nome === gato.nome),
+              1
+            );
           }
         }
       }
