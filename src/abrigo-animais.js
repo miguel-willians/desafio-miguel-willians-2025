@@ -26,12 +26,6 @@ class AbrigoAnimais {
       const locoTemCompanhia =
         nomeAnimal === "Loco" && resultado.some((r) => r.endsWith(pessoa));
 
-      // console.log("Nome animal:", nomeAnimal);
-
-      console.log("Resultado:", resultado);
-
-      console.log("Loco tem companhia:", locoTemCompanhia);
-
       if (locoTemCompanhia) {
         return brinquedosAnimal.every((brinquedo) =>
           brinquedosPessoa.includes(brinquedo)
@@ -57,16 +51,11 @@ class AbrigoAnimais {
       return true;
     }
 
+    // 1. Checar se o ordemAnimais tem o pet desejado
     const animaisSelecionados = ordemAnimaisArr
       .map((nome) => pets.find((pet) => pet.nome === nome))
       .filter((animal) => animal);
 
-    console.log(animaisSelecionados);
-    // 1. Checar se o ordemAnimais tem o pet desejado
-    // for (const animal of ordemAnimaisArr) {
-    //   //ERRO aqui ele pega um animal por vez, como loco é o primeiro ele fica sozinho durante o loop em animais selecionados. Alternativa: selecionar td de uma vez
-    //    animaisSelecionados = pets.filter((pet) => pet.nome === animal);
-    // }
     // 2. checa se há pelo menos um animal selecionável:
     if (animaisSelecionados.length === 0) {
       return { erro: "Animal inválido" };
@@ -89,12 +78,19 @@ class AbrigoAnimais {
     // Verificar se há gatos
     if (gatos.length > 0) {
       for (const gato of gatos) {
-        // Verificar se há pelo menos um brinquedo do gato seja igual a dos outros animais
-        const conflito = animaisSelecionados.some(
-          (outro) =>
-            outro.nome !== gato.nome &&
-            outro.brinquedos.some((b) => gato.brinquedos.includes(b))
-        );
+        // Verificar conflito apenas contra animais já adotados
+        const conflito = resultado.some((saida) => {
+          const [nomeAnimal, destino] = saida.split(" - ");
+          if (destino === "abrigo") return false;
+          const animalConflitante = animaisSelecionados.find(
+            (a) => a.nome === nomeAnimal
+          );
+          // Verificar se há pelo menos um brinquedo do gato seja igual a do outro animal
+          return animalConflitante.brinquedos.some((brinquedo) =>
+            gato.brinquedos.includes(brinquedo)
+          );
+        });
+
         if (conflito) {
           resultado.push(`${gato.nome} - abrigo`);
           // remove o gato da lista para não ser processado depois
@@ -106,10 +102,8 @@ class AbrigoAnimais {
       }
     }
 
-    console.log("Animais", animaisSelecionados);
     // 3. Checa se as pessoas satisfazem o desejo dos animais:
     animaisSelecionados.forEach((animal) => {
-      console.log("Animal atual do loop:", animal);
       const pessoa1Satisfaz = satisfazAnimal(
         animal.brinquedos,
         animal.nome,
