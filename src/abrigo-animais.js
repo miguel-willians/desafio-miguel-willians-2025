@@ -15,6 +15,8 @@ class AbrigoAnimais {
 
     const ordemAnimaisArr = ordemAnimais.split(",");
 
+    const pessoas = ["pessoa 1", "pessoa 2"];
+
     let resultado = [];
 
     function satisfazAnimal(
@@ -108,13 +110,13 @@ class AbrigoAnimais {
         animal.brinquedos,
         animal.nome,
         brinquedosPessoa1Arr,
-        "pessoa 1"
+        pessoas[0]
       );
       const pessoa2Satisfaz = satisfazAnimal(
         animal.brinquedos,
         animal.nome,
         brinquedosPessoa2Arr,
-        "pessoa 2"
+        pessoas[1]
       );
 
       if (
@@ -123,9 +125,19 @@ class AbrigoAnimais {
       ) {
         resultado.push(`${animal.nome} - abrigo`);
       } else if (pessoa1Satisfaz && !pessoa2Satisfaz) {
-        resultado.push(`${animal.nome} - pessoa 1`);
+        const adotadosPessoa1 = resultado.filter((saida) =>
+          saida.endsWith(pessoas[0])
+        );
+        if (adotadosPessoa1.length === 3) {
+          resultado.push(`${animal.nome} - abrigo`);
+        } else resultado.push(`${animal.nome} - ${pessoas[0]}`);
       } else if (!pessoa1Satisfaz && pessoa2Satisfaz) {
-        resultado.push(`${animal.nome} - pessoa 2`);
+        const adotadosPessoa2 = resultado.filter((saida) =>
+          saida.endsWith(pessoas[1])
+        );
+        if (adotadosPessoa2.length === 3) {
+          resultado.push(`${animal.nome} - abrigo`);
+        } else resultado.push(`${animal.nome} - ${pessoas[1]}`);
       }
     });
     resultado.sort();
