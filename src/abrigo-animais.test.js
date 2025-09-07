@@ -50,8 +50,8 @@ describe("Abrigo de Animais", () => {
     // pessoa 1 teria condições de adotar todos, mas só pode levar 3
     expect(resultado.lista).toContain("Rex - pessoa 1");
     expect(resultado.lista).toContain("Mimi - pessoa 1");
-    expect(resultado.lista).toContain("Fofo - pessoa 1");
-    expect(resultado.lista).toContain("Zero - abrigo"); // excedeu limite
+    expect(resultado.lista).toContain("Fofo - abrigo"); //Fofo não recebe os brinquedos na ordem que ele gosta brinquedos: ["BOLA", "RATO", "LASER"]
+    expect(resultado.lista).toContain("Zero - pessoa 1");
     expect(resultado.lista).toContain("Bola - abrigo"); // excedeu limite
     expect(resultado.lista).toContain("Loco - abrigo"); // excedeu limite
     expect(resultado.lista.length).toBe(6);
