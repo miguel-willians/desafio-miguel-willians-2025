@@ -1,17 +1,11 @@
+import { pets } from "./pets/pets";
+
 class AbrigoAnimais {
   encontraPessoas(brinquedosPessoa1, brinquedosPessoa2, ordemAnimais) {
-    const pets = [
-      { nome: "Rex", tipo: "cão", brinquedos: ["RATO", "BOLA"] },
-      { nome: "Mimi", tipo: "gato", brinquedos: ["BOLA", "LASER"] },
-      { nome: "Fofo", tipo: "gato", brinquedos: ["BOLA", "RATO", "LASER"] },
-      { nome: "Zero", tipo: "gato", brinquedos: ["RATO", "BOLA"] },
-      { nome: "Bola", tipo: "cão", brinquedos: ["CAIXA", "NOVELO"] },
-      { nome: "Bebe", tipo: "cão", brinquedos: ["LASER", "RATO", "BOLA"] },
-      { nome: "Loco", tipo: "jabuti", brinquedos: ["SKATE", "RATO"] },
+    const brinquedos = [
+      brinquedosPessoa1.split(","),
+      brinquedosPessoa2.split(","),
     ];
-
-    const brinquedosPessoa1Arr = brinquedosPessoa1.split(",");
-    const brinquedosPessoa2Arr = brinquedosPessoa2.split(",");
 
     const ordemAnimaisArr = ordemAnimais.split(",");
 
@@ -109,13 +103,13 @@ class AbrigoAnimais {
       const pessoa1Satisfaz = satisfazAnimal(
         animal.brinquedos,
         animal.nome,
-        brinquedosPessoa1Arr,
+        brinquedos[0],
         pessoas[0]
       );
       const pessoa2Satisfaz = satisfazAnimal(
         animal.brinquedos,
         animal.nome,
-        brinquedosPessoa2Arr,
+        brinquedos[1],
         pessoas[1]
       );
 
@@ -128,6 +122,7 @@ class AbrigoAnimais {
         const adotadosPessoa1 = resultado.filter((saida) =>
           saida.endsWith(pessoas[0])
         );
+        // Verifica se a pessoa tem menos de 3 animais
         if (adotadosPessoa1.length === 3) {
           resultado.push(`${animal.nome} - abrigo`);
         } else resultado.push(`${animal.nome} - ${pessoas[0]}`);
@@ -135,6 +130,7 @@ class AbrigoAnimais {
         const adotadosPessoa2 = resultado.filter((saida) =>
           saida.endsWith(pessoas[1])
         );
+        // Verifica se a pessoa tem menos de 3 animais
         if (adotadosPessoa2.length === 3) {
           resultado.push(`${animal.nome} - abrigo`);
         } else resultado.push(`${animal.nome} - ${pessoas[1]}`);
